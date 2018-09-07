@@ -3,7 +3,7 @@ pipeline {
     agent { label 'suresh' }
     // global env variables
     environment {
-        EMAIL_RECIPIENTS = 'mahmoud.romeh@test.com'
+        EMAIL_RECIPIENTS = 'tondepusuresh@gmail.com'
     }
     stages {
 
@@ -29,7 +29,7 @@ pipeline {
                         junit '**//*target/surefire-reports/TEST-*.xml'
                         archive 'target*//*.jar'
                     } else {
-                        bat(/"${mvnHome}\bin\mvn" -Dintegration-tests.skip=true clean package/)
+                        bat(/"${mvnHome}\bin\mvn" -Dintegration-tests.skip=flase clean package/)
                         def pom = readMavenPom file: 'pom.xml'
                         print pom.version
                         junit '**//*target/surefire-reports/TEST-*.xml'
@@ -46,7 +46,7 @@ pipeline {
                     def mvnHome = tool 'Maven 3.3.9'
                     if (isUnix()) {
                         // just to trigger the integration test without unit testing
-                        sh "'${mvnHome}/bin/mvn'  verify -Dunit-tests.skip=true"
+                        sh "'${mvnHome}/bin/mvn'  verify -Dunit-tests.skip=flase"
                     } else {
                         bat(/"${mvnHome}\bin\mvn" verify -Dunit-tests.skip=true/)
                     }
@@ -63,7 +63,7 @@ pipeline {
                     def mvnHome = tool 'Maven 3.3.9'
                     withSonarQubeEnv {
 
-                        sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dintegration-tests.skip=true -Dmaven.test.failure.ignore=true"
+                        sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dintegration-tests.skip=true -Dmaven.test.failure.ignore=flase"
                     }
                 }
             }
